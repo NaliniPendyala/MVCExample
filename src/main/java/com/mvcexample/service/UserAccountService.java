@@ -2,6 +2,7 @@ package com.mvcexample.service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import com.mvcexample.model.UserAccount;
 import com.mvcexample.utility.DBConn;
@@ -17,6 +18,7 @@ private Connection conn;
 	public boolean saveInfo(UserAccount ua) {
 		boolean flag= true;
 			try {
+								
 				PreparedStatement ps= conn.prepareStatement("insert into AccountInfo (name, username, password) values (?,?,?)");
 				ps.setString(1, ua.getName());
 				ps.setString(2, ua.getUsername());
@@ -38,6 +40,41 @@ private Connection conn;
 	}
 	
 	
+	public UserAccount  getUser (String username , String password) {
+ 		UserAccount ua =null;
+		
+ 		try {
+ 			
+ 			ResultSet rs=null;
+ 			PreparedStatement ps= conn.prepareStatement("select * from AccountInfo where username=? and password=?");
+ 			ps.setString(1,username);
+ 			ps.setString(2,username);
+ 			rs=ps.executeQuery();
+ 		
+ 			if(rs.next())
+ 					{
+ 				ua= new UserAccount();
+ 				ua.setName(rs.getString("name"));
+ 				ua.setPassword(rs.getString("password"));
+ 				ua.setUsername(rs.getString("username"));
+ 				return ua;
+ 					}
+ 			else {
+ 				return null;
+ 			}
+ 						
+ 			
+ 		}catch(Exception e)
+ 		{
+ 		e.printStackTrace();
+ 		return null;
+ 		}
+ 		
+ 		
+	
+		
+	
+	}
 	
 	
 }
