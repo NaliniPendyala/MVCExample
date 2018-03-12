@@ -69,12 +69,34 @@ private Connection conn;
  		e.printStackTrace();
  		return null;
  		}
- 		
- 		
-	
-		
+ 			
 	
 	}
 	
+	public boolean checkUsername(String username) {
+		
+	
+		try {
+	PreparedStatement ps= conn.prepareStatement("select * from AccountInfo where username=?");
+	
+	ps.setString(1, username);
+	ResultSet rs= ps.executeQuery();
+	if(rs.next())
+	{
+		return true;
+	}
+	else
+		
+		return false;
+	
+	
+		}catch(Exception e)
+		{
+		return false;	
+		}
+	
+	
+		
+	}
 	
 }
