@@ -17,6 +17,7 @@ public class LoginController extends HttpServlet {
       public LoginController() {
         super();
       }
+      
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	UserAccountService uas= new UserAccountService();
@@ -29,8 +30,13 @@ public class LoginController extends HttpServlet {
 	 
 	if(ua!=null)
 	{
+		
 		HttpSession session= request.getSession();
 		session.setAttribute("ua", ua);
+		
+		if (ua.getRole().equalsIgnoreCase("admin"))
+			response.sendRedirect("admin.jsp");
+		else
 		response.sendRedirect("display.jsp");
 	}
 	

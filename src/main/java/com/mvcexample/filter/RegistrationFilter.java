@@ -9,8 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 
-import com.mvcexample.model.UserAccount;
 import com.mvcexample.service.UserAccountService;
 @WebFilter("/registration")
 public class RegistrationFilter implements Filter{
@@ -18,6 +18,9 @@ public class RegistrationFilter implements Filter{
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain filter)
 			throws IOException, ServletException {
 		
+		
+		if(( (HttpServletRequest)req).getMethod().equalsIgnoreCase("post"))
+		{
 		
 		String name= req.getParameter("name");
 		String username= req.getParameter("username");
@@ -59,7 +62,7 @@ if (password.trim().length()<=0) {
 	else
 		
 	{
-		RequestDispatcher rd= req.getRequestDispatcher("registration.jsp");
+		RequestDispatcher rd= req.getRequestDispatcher("/pages/registration.jsp");
 		rd.forward(req,res);
 		
 	}
@@ -67,6 +70,8 @@ if (password.trim().length()<=0) {
 	}
 
 	
+	else
+	filter.doFilter(req, res);
 	
-	
+	}
 }

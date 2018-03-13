@@ -19,7 +19,7 @@ private Connection conn;
 		boolean flag= true;
 			try {
 								
-				PreparedStatement ps= conn.prepareStatement("insert into AccountInfo (name, username, password) values (?,?,?)");
+				PreparedStatement ps= conn.prepareStatement("insert into AccountInfo (name, username, password,role) values (?,?,?,'user')");
 				ps.setString(1, ua.getName());
 				ps.setString(2, ua.getUsername());
 				ps.setString(3, ua.getPassword());
@@ -57,6 +57,7 @@ private Connection conn;
  				ua.setName(rs.getString("name"));
  				ua.setPassword(rs.getString("password"));
  				ua.setUsername(rs.getString("username"));
+ 				ua.setRole(rs.getString("role"));
  				return ua;
  					}
  			else {
