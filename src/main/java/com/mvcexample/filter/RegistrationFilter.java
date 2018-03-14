@@ -14,10 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import com.mvcexample.service.UserAccountService;
 @WebFilter("/registration")
 public class RegistrationFilter implements Filter{
-
+private String views;
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain filter)
 			throws IOException, ServletException {
-		
+
+		  views=req.getServletContext().getInitParameter("views");
+			
+			
 		
 		if(( (HttpServletRequest)req).getMethod().equalsIgnoreCase("post"))
 		{
@@ -57,12 +60,14 @@ if (password.trim().length()<=0) {
 	validate=false;
 }
 	if(validate && !userExists)
-		
+	{
+		System.out.println("in filter ");
 	filter.doFilter(req,res);
+	}
 	else
 		
 	{
-		RequestDispatcher rd= req.getRequestDispatcher("/pages/registration.jsp");
+		RequestDispatcher rd= req.getRequestDispatcher(views+"/registration.jsp");
 		rd.forward(req,res);
 		
 	}
@@ -72,6 +77,7 @@ if (password.trim().length()<=0) {
 	
 	else
 	filter.doFilter(req, res);
+	
 	
 	}
 }

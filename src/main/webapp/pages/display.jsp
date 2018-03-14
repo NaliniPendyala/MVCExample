@@ -13,7 +13,8 @@
 
 Name:  ${ua.name}
 Username:  ${ua.username}
-<a href="logout"><input type=button value="Logout"></a>
+<%String s= request.getServletContext().getContextPath(); %>
+<a href='<%=s%>/logout'><input type=button value="Logout"></a>
 </c:when>
 <c:otherwise><c:redirect url="login.jsp"></c:redirect>
 </c:otherwise>

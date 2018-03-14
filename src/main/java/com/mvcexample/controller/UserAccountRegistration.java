@@ -14,7 +14,7 @@ import com.mvcexample.service.UserAccountService;
 public class UserAccountRegistration extends HttpServlet {
 	
 	private String views;
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
@@ -36,25 +36,19 @@ public class UserAccountRegistration extends HttpServlet {
 		
 		if (flag)
 			
-			resp.sendRedirect(views+"/login.jsp");
+			resp.sendRedirect(req.getServletContext().getContextPath()+"/Login");
 		
 		else
 			req.getRequestDispatcher(views+"/registration.jsp").forward(req, resp);
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
 	}
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("in service");
-		
+		System.out.println("in user account registration service");
+		System.out.println(request.getServletContext().getContextPath());
+		System.out.println(views);
 		  views=getServletContext().getInitParameter("views");
 		
 		if(request.getMethod().equalsIgnoreCase("get"))
@@ -65,9 +59,10 @@ public class UserAccountRegistration extends HttpServlet {
 			doPost(request, response);
 		}
 	}
+
 @Override
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	// TODO Auto-generated method stub
+
 	RequestDispatcher rd= req.getRequestDispatcher(views+"/registration.jsp");
 	rd.forward(req, resp);
 }

@@ -18,7 +18,22 @@ public class LoginController extends HttpServlet {
         super();
       }
       
-
+  	private String views;
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("in login controller service");
+		
+		  views=getServletContext().getInitParameter("views");
+		
+		if(request.getMethod().equalsIgnoreCase("get"))
+		{
+			doGet(request, response);
+		}else
+		{
+			doPost(request, response);
+		}
+	}
+	 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	UserAccountService uas= new UserAccountService();
 	
@@ -35,21 +50,28 @@ public class LoginController extends HttpServlet {
 		session.setAttribute("ua", ua);
 		
 		if (ua.getRole().equalsIgnoreCase("admin"))
-			response.sendRedirect("admin.jsp");
+			response.sendRedirect(request.getServletContext().getContextPath()+"/pages/admin.jsp");
 		else
-		response.sendRedirect("display.jsp");
+			
+		response.sendRedirect(request.getServletContext().getContextPath()+"/pages/display.jsp");
 	}
 	
 	else {
 		
-		RequestDispatcher rd= request.getRequestDispatcher("login.jsp");
+		RequestDispatcher rd= request.getRequestDispatcher(views+"/login.jsp");
 		request.setAttribute("errormessage", "Please enter correct username or password");
 		rd.forward(request, response);
 	}
 	}
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		RequestDispatcher rd= req.getRequestDispatcher(views+"/login.jsp");
+		//req.setAttribute("errormessage", "Please enter correct username or password");
+		rd.forward(req, resp);
+	}
 	
-	 
-	 
+
 	
 	}
 

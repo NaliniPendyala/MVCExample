@@ -13,13 +13,29 @@ public class LogoutServlet extends HttpServlet {
     public LogoutServlet() {
         super();
     }
+    private String views;
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println(" in logout servlet service");
+		
+		  views=getServletContext().getInitParameter("views");
+		
+		if(request.getMethod().equalsIgnoreCase("get"))
+		{
+			doGet(request, response);
+		}else
+		{
+			doPost(request, response);
+		}
+	}
+	 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
 		HttpSession  s= request.getSession();
 		s.removeAttribute("ua");
 		s.invalidate();
-		response.sendRedirect("login.jsp");
+		response.sendRedirect(request.getServletContext().getContextPath()+"/Login");
 		
 	}
 
