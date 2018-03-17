@@ -4,20 +4,30 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+
 import com.mvcexample.model.UserAccount;
-import com.mvcexample.utility.DBConn;
 
 public class UserAccountService {
 private Connection conn;
+private EntityManager manager;
+
 	public UserAccountService(){
-		 conn= new DBConn().getConnection();
+
+		EntityManagerFactory entityMgrFac=Persistence.createEntityManagerFactory("demoPersistence");
 		
-		 		 	 
+		manager = entityMgrFac.createEntityManager();
+		System.out.println(manager);
 	}
 
+	
 	public boolean saveInfo(UserAccount ua) {
 		boolean flag= true;
-			try {
+			/*try {
 								
 				PreparedStatement ps= conn.prepareStatement("insert into AccountInfo (name, username, password,role) values (?,?,?,'user')");
 				ps.setString(1, ua.getName());
@@ -34,15 +44,49 @@ private Connection conn;
 			}catch(Exception e) {
 				e.printStackTrace();
 				return false;
-			}
-			
+			}*/
+		
+		System.out.println(ua);
+		try {
+		EntityTransaction transaction = manager.getTransaction();
+		transaction.begin();
+		manager.persist(ua);
+		transaction.commit();
+		manager.close();
+		return true;
+		}catch (Exception e) {
+			// TODO: handle exception
+			return false;
+		}
 		
 	}
 	
 	
 	public UserAccount  getUser (String username , String password) {
- 		UserAccount ua =null;
-		
+ 		
+ 		try {
+ 		EntityTransaction transaction= manager.getTransaction();
+ 		transaction.begin();
+      //ua=manager.find(UserAccount.class,username);
+ 		TypedQuery<UserAccount> query= manager.createQuery("from UserAccount where username=:uname and password=:pword",UserAccount.class);
+ 	    query.setParameter("uname", username);
+ 	    query.setParameter("pword", password);
+ 	    return query.getSingleResult();
+ 		
+ 		}catch (Exception e) {
+			// TODO: handle exception
+ 			return null;
+		}
+ 		
+ 		/*
+ 		ua= manager.createQuery("from UserAccount where username=:uname and password=:pword",UserAccount.class)
+ 				.setParameter("uname", username)
+ 				.setParameter("pword", password)
+ 				.getSingleResult();*/
+ 	
+ 		
+
+		/*
  		try {
  			
  			ResultSet rs=null;
@@ -70,8 +114,8 @@ private Connection conn;
  		e.printStackTrace();
  		return null;
  		}
- 			
-	
+ 			*/
+    
 	}
 	
 	public boolean checkUsername(String username) {

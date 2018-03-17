@@ -1,12 +1,19 @@
 package com.mvcexample.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
 public class UserAccount {
  
-	private String name;
-	private String username;
+@Id
+private String username;
+private String name;
+	
 	private String password;
 	private String role;
-	private int id;
+
 	public String getName() {
 		return name;
 	}
@@ -31,9 +38,12 @@ public class UserAccount {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public int getId() {
-		return id;
+	@Override
+	public String toString() {
+		return "UserAccount [username=" + username + ", name=" + name + ", password=" + password + ", role=" + role
+				+ "]";
 	}
+
 	
 	
 }
